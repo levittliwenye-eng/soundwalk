@@ -26,7 +26,7 @@ Open http://127.0.0.1:8766/ . Microphone recording requires a secure context (lo
 - Browser localStorage stores only notes and the top suggestions, up to 100 observations. No audio persistence, location collection, accounts or server API.
 - Service worker caches the app, model, runtime and reference clips. “Offline copy ready” only appears after all cache entries install. Reopening an owner-private deployment may still need online authentication. Runtime is not presented as verified on all browsers or devices.
 
-MediaPipe's upstream notice says input stays on device and performance/utilization metrics are sent to Google. Soundwalk vendors its assets and sets `connect-src 'self'` in a Content-Security-Policy to block external connections. Its worker inherits this policy. Refer to the upstream notice in `dist/vendor/README.md`. No external CDN is used.
+MediaPipe's upstream notice says input stays on device and performance/utilization metrics are sent to Google. Soundwalk vendors its assets and sets `connect-src 'self'` in a Content-Security-Policy to block external connections. The module worker is bootstrapped from a Blob URL so that it inherits the document CSP; an ordinary URL-based worker would not inherit the meta policy. Refer to the upstream notice in `dist/vendor/README.md`. No external CDN is used.
 
 ## Verification
 
@@ -37,7 +37,7 @@ Local browser observations on 2026-10-08, with the real model and credited 8-sec
 | birds2.wav excerpt | Bird vocalization, bird call, bird song | 0.603 |
 | rain.wav excerpt | Rain | 0.507 |
 
-Bird reference also returned Bird 0.596 and Animal 0.567; rain also returned Water 0.467 and Rain on surface 0.286. Model score is not a calibrated probability. These are two examples, **not** a general accuracy benchmark. No bird-species recognition is offered. Unit checks cover frame aggregation, conservative mission handling and CSV escaping. Browser journal save was exercised.
+Bird reference also returned Bird 0.596 and Animal 0.567; rain also returned Water 0.467 and Rain on surface 0.286. Model score is not a calibrated probability. These are two examples, **not** a general accuracy benchmark. No bird-species recognition is offered. Unit checks cover frame aggregation, conservative mission handling and CSV escaping. Browser journal save was exercised, persisted across reload, and the cached page classified birds again after the local HTTP server was stopped and a separate HTTP connection check failed. This is a local server-unavailable test, not a physical phone field test or proof of offline private-site sign-in.
 
 ## Limitations
 

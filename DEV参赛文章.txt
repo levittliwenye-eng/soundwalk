@@ -1,0 +1,58 @@
+---
+title: Soundwalk: a pocket field journal powered by an open sound model
+published: false
+tags: devchallenge, hf26challenge, ai, opensource
+---
+
+*This is a submission for the [Hacktoberfest Open-Source AI Challenge Week 1: Touch Grass](https://dev.to/challenges/hacktoberfest-week1-2026-10-05).*
+
+## What I Built
+
+Soundwalk is a small companion for a listening walk. Record eight seconds, or choose a short audio file, and an open sound-event model suggests what might be in it. Add your own observation, keep it in a pocket field journal, and take a ten-minute listening mission outside.
+
+The point is to notice something, then put the screen away. A bird suggestion leads to a task about listening underneath the birds. A water or rain suggestion leads to comparing exposed and sheltered listening spots. Low scores lead to a general near/far/overlooked-sound exercise instead of a confident identification.
+
+This is for people who enjoy field recording or simply want a reason to listen on a familiar walk. It does not identify bird species, assess sound levels, or certify recording quality.
+
+## Demo
+
+[Try Soundwalk](https://soundwalk-oct2026.almondash.chatgpt.site/).
+
+You can run two credited reference clips before going outside. The birdsong excerpt is by jmiddlesworth (CC0); the rain excerpt is by InspectorJ (CC BY 4.0). Their original links, credits and excerpt modifications are included in the app. Reference audio is clearly marked so it cannot be mistaken for a recording from your walk.
+
+## Code
+
+[Source code, model assets, licenses and run instructions](https://github.com/levittliwenye-eng/soundwalk).
+
+The application, MediaPipe runtime and YAMNet model are Apache-2.0. The third-party notices retain the separate audio licenses and attribution. No API key, paid inference service or package installation is needed to run the vendored application locally.
+
+## How I Built It
+
+YAMNet is the core of the app: an open model for 521 broad sound-event classes. MediaPipe Tasks Audio 1.1.0 runs it in a browser Web Worker. Audio is decoded and downmixed on the device; the actual input sample rate is passed to the classifier. Category scores are averaged across all returned frames and classes, rather than selecting whichever frame looks most convincing.
+
+The score display deliberately uses decimal model scores. These are not calibrated probabilities. The 0.2 threshold for a specific listening mission is a simple product heuristic, not a validated scientific operating point. Your field note remains your own observation.
+
+The journal stores notes and suggestions locally, with no audio retention or location collection. An export makes the notes portable. The service worker caches the app, model, runtime and reference clips after a successful initial load. Hosted private-site authentication can still require a connection; browser and device behavior varies.
+
+The upstream MediaPipe notice says inputs stay on device and performance/utilization metrics are sent to Google. This app vendors the assets and restricts external network connections with a Content-Security-Policy. Its model worker is bootstrapped from a Blob so that it inherits that policy, rather than assuming a URL-based worker inherits the document policy.
+
+### What was actually tested
+
+Two eight-second reference clips were classified with the real model in a browser:
+
+| Reference input | Leading suggestion | Mean model score shown |
+|---|---|---:|
+| Birdsong | Bird vocalization, bird call, bird song | 0.603 |
+| Rain | Rain | 0.507 |
+
+The resulting missions differed, and a note was saved and retained across a page reload. Five automated checks cover aggregation, missing results, low-score fallback, mission selection and CSV escaping. The layout was inspected at desktop and 390-pixel width. After stopping the local HTTP server and confirming it no longer accepted connections, the cached page reopened and classified the birdsong clip again. This verifies the local cached workflow under that condition; it does not establish offline sign-in to a private hosted site.
+
+Those two clips are examples, not a general accuracy benchmark. I do not claim an outdoor field test, a user study, or verified microphone recording on a physical phone. Mixed sound and wind can confuse the model. The next useful validation would be short recordings from real walks, with the listener's notes kept separate from the predictions.
+
+## Why Does Open Innovation Matter?
+
+A small open model makes this project useful without an inference account, a secret key or per-recording charges. Its weights, runtime and licenses can be inspected and run locally. A visitor can keep recordings on the device and continue using cached assets without depending on a cloud model for every listening stop.
+
+The open approach also makes limitations visible. There are broad classes and imperfect scores, so the interface treats recognition as a prompt to observe rather than a verdict. The user can inspect the aggregation and change the mission rules instead of relying on an opaque recommendation endpoint.
+
+AI disclosure: this project and write-up were produced by an AI agent under the account owner's authorization. Classification examples came from real model executions. No personal outdoor experience or human authorship is invented.

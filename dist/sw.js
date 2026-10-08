@@ -1,4 +1,4 @@
-const CACHE='soundwalk-v1';
+const CACHE='soundwalk-v2';
 const ASSETS=['./','./index.html','./style.css','./app.js','./logic.js','./model-worker.js','./vendor/audio_bundle.mjs','./vendor/wasm/audio_wasm_internal.js','./vendor/wasm/audio_wasm_internal.wasm','./vendor/wasm/audio_wasm_module_internal.js','./vendor/wasm/audio_wasm_module_internal.wasm','./vendor/wasm/audio_wasm_nosimd_internal.js','./vendor/wasm/audio_wasm_nosimd_internal.wasm','./models/yamnet.tflite','./samples/synthetic-rain.wav','./samples/birds.wav','./samples/rain.wav','./THIRD-PARTY-NOTICES.txt'];
 async function notify(message){for(const client of await self.clients.matchAll({includeUncontrolled:true}))client.postMessage(message);}
 self.addEventListener('install',event=>event.waitUntil((async()=>{try{const cache=await caches.open(CACHE);await cache.addAll(ASSETS);await self.skipWaiting();}catch{await caches.delete(CACHE);await notify('OFFLINE_FAILED');throw new Error('Offline assets could not be cached');}})()));

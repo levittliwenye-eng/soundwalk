@@ -1,0 +1,10 @@
+Soundwalk / Hacktoberfest Week 1
+2026-10-08，北京时间
+已完成：浏览器内真实 YAMNet 识别；鸟鸣与雨声参考素材验证；两种任务推荐；本地观察记录保存及刷新保留；五项关键测试；手机宽度检查；服务器停机后缓存重新加载与真实模型推理通过；授权条件核对；私有源码仓库建立；英文投稿草稿准备。
+私有源码：https://github.com/levittliwenye-eng/soundwalk
+私有网站：https://soundwalk-oct2026.almondash.chatgpt.site
+Sites project_id：appgprj_6ac75a39fb008191894f1a0d276bb490
+首次部署 succeeded：appgdep_6ac75d983230819194ddb478daecba8d；后续修正缓存路径及 worker CSP，需以最终部署凭证为准。
+尚未完成：修正版私有发布、公开源码与演示、接受此新比赛规则并正式投稿。没有获奖或收入。
+不依赖 Qloo key，不申请新账号或付费服务。不宣称户外实测、物种识别、一般准确率或手机麦克风已验证。
+本轮新增支出 0 元；收入 0 元。

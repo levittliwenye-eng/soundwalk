@@ -1,0 +1,83 @@
+Soundwalk 模型、运行时及演示音频依据
+核查日期：2026-10-08。范围为官方文档、官方发布卡与原作者许可页的只读研究；没有操作网站、报名、提交、购买或申请 key。本次没有运行音频分类，以下预期类别不等于实测结果。
+
+1. 建议采用的模型与固定下载地址
+
+MediaPipe 官方 Audio Classifier 概览推荐 YAMNet，521 个 AudioSet 声音事件类别。浏览器指南支持加载本地 modelAssetPath / modelAssetBuffer，音频由 classify(audioData, sampleRate) 处理。
+官方指南：https://ai.google.dev/edge/mediapipe/solutions/audio/audio_classifier/web_js
+官方概览：https://ai.google.dev/edge/mediapipe/solutions/audio/audio_classifier/index
+
+固定版本模型下载 URL：
+https://storage.googleapis.com/mediapipe-models/audio_classifier/yamnet/float32/1/yamnet.tflite
+该精确地址见 Google AI Edge 官方演示源码的 defaultModelUrl 与 models.yamnet：
+https://github.com/google-ai-edge/mediapipe-samples-web/blob/main/src/tasks/audio-classifier.ts
+官方概览的 latest 下载地址为：
+https://storage.googleapis.com/mediapipe-models/audio_classifier/yamnet/float32/latest/yamnet.tflite
+建议用 /1/ 并记录最终下载文件的 hash，以免 latest 变化影响复现。
+
+模型权重许可依据是 Google 官方 YAMNet 发布卡的 classification-tflite、Version 1 栏明确列出的 Apache 2.0：
+https://www.kaggle.com/models/google/yamnet/tfLite
+旧 TF Hub 精确模型卡入口会转向 Kaggle：
+https://tfhub.dev/google/lite-model/yamnet/classification/tflite/1
+发布卡说明该版本固定接受 15600 个 mono、16 kHz、float32 样本，返回 521 类分数；MediaPipe 概览写输入 1×15600。实际运行时应以下载的模型 metadata 和 SDK 结果为准，不混用任意长度波形的 SavedModel / 通用 TFLite 导出示例。本次未比较 Kaggle 与 MediaPipe 下载物的二进制是否完全相同。
+
+原始模型代码/权重出处：
+https://github.com/tensorflow/models/tree/master/research/audioset/yamnet
+仓库 /research 的 Apache 2.0 许可：
+https://github.com/tensorflow/models/blob/master/LICENSE
+该 README 的 https://storage.googleapis.com/audioset/yamnet.h5 是 Keras 权重，不能当作浏览器 .tflite 直接使用。
+
+结论：Apache 2.0 允许免费使用、修改及再分发，包含本地托管的部署方式。分发时附完整许可文本，保留适用版权/署名/许可及 NOTICE 信息；修改上游文件时注明改动。不能只凭 Google 文档页尾的“代码样例 Apache 2.0”来证明模型权重许可。本结论采用上述模型发布卡及原始仓库证据。
+许可原文：https://www.apache.org/licenses/LICENSE-2.0
+
+2. 浏览器运行时的实际版本与隐私说明
+
+本轮主线程已下载 /private/tmp/mediapipe-tasks-audio-1.1.0.tgz，并解包到 /private/tmp/package/。本研究只读核验了该目录 package.json 与 README.md：name 为 @mediapipe/tasks-audio，version 为 1.1.0，license 为 Apache-2.0。网上搜索缓存仍曾显示 1.0.1 latest，不能拿缓存代替本地实际版本。应让 JS bundle 与 WASM 来自同一 1.1.0 包。
+官方包入口：https://www.npmjs.com/package/@mediapipe/tasks-audio
+运行时源码许可：https://github.com/google-ai-edge/mediapipe/blob/master/LICENSE
+
+实际 1.1.0 README 的 Privacy Notice 日期为 2026-06-05：输入内容在设备处理，MediaPipe 不向 Google 服务器发送该输入；另会发送 API 性能和使用指标，并提到开发者对必要的知情同意负责。本地托管 bundle/WASM/model 本身不证明没有指标网络请求。主线程拟用站点 CSP 限制外联，并在 About 如实披露；本研究没有验证最终 CSP、网络行为或离线可用性。
+适合已知事实的文案：音频在浏览器本地分析，本站不上传录音；模型和运行库首次从本站下载。若写“没有任何外部请求”，须有最终浏览器网络验证证据。
+
+3. 可公开再分发的两份演示音频
+
+音频来自 IBM 官方 MAX-Audio-Classifier 仓库，不是从 AudioSet 的 YouTube 链接提取。仓库逐文件的来源与许可表：
+https://github.com/IBM/MAX-Audio-Classifier/blob/master/samples/README.md
+README 说明部分样例经过 16-bit 转换；音频权利按各文件原作者 Creative Commons 许可，不按 IBM 项目代码许可统一判断。
+
+A. 鸟鸣
+仓库文件：https://github.com/IBM/MAX-Audio-Classifier/blob/master/samples/birds2.wav
+精确直接下载：https://raw.githubusercontent.com/IBM/MAX-Audio-Classifier/master/samples/birds2.wav
+原始作品：Bird call in spring.mp3，作者 jmiddlesworth。
+原作者来源：https://freesound.org/people/jmiddlesworth/sounds/364663/
+该原作者页和 IBM README 均标 CC0。原作者页显示 CC0 1.0 Universal，允许复制、修改和再分发，含商业使用。
+许可：https://creativecommons.org/publicdomain/zero/1.0/
+仓库 blob 显示约 4.05 MB；原始 Freesound 录音显示 2:11.540。转换后仓库 WAV 的实际时长本次未读取，不将原始 MP3 参数冒充 WAV 参数。
+建议公开 demo 使用从 WAV 截取的 5–10 秒鸟鸣片段。保留来源说明便于追溯；CC0 不强制署名。
+候选预期标签：Bird、Bird vocalization, bird call, bird song、Chirp, tweet。需要实际推理后记录 top-k；不作鸟种鉴定。
+
+B. 雨声
+仓库文件：https://github.com/IBM/MAX-Audio-Classifier/blob/master/samples/rain.wav
+精确直接下载：https://raw.githubusercontent.com/IBM/MAX-Audio-Classifier/master/samples/rain.wav
+原始作品：Rain, Moderate, C.wav，作者 InspectorJ。
+原作者来源：https://freesound.org/people/InspectorJ/sounds/401275/
+IBM README 标 Attribution；原作者页精确注明 Attribution 4.0，即 CC BY 4.0。允许复制、修改和再分发，含商业使用，条件为适当署名、链接许可、注明改动，不暗示作者背书。
+许可：https://creativecommons.org/licenses/by/4.0/
+仓库 blob 显示约 2.07 MB；原始 Freesound 录音显示 1:00.116、44.1 kHz、16-bit、stereo。仓库转换后的实际参数本次未读。
+建议 demo 使用 5–10 秒片段；在公开网站 Credits/About、源码音频目录说明和下载包一起保留来源及改动说明。
+可采用署名形式（改动部分按最终处理事实填写）：
+“Rain, Moderate, C.wav” by InspectorJ (https://www.jshaw.co.uk/), via Freesound https://freesound.org/people/InspectorJ/sounds/401275/, CC BY 4.0 https://creativecommons.org/licenses/by/4.0/. Adapted from IBM MAX-Audio-Classifier sample; excerpted and converted to mono 16 kHz for this demo.
+候选预期标签：Rain、Rain on surface、Raindrop、Water。需要实际推理后记录 top-k；不能保证这些类别排第一。
+
+4. 输出与许可注意点
+
+官方模型标签列表：
+https://storage.googleapis.com/mediapipe-tasks/audio_classifier/yamnet_label_list.txt
+此处确认存在上述 Bird/Rain/Water 英文标签。演示音频预计包含的类别来自原作者描述与标签映射，不是本次推理结论。
+
+Google YAMNet 模型卡明确分类输出未按类别校准，分数不可直接作为概率。UI 显示 model score / 匹配分数及“建议”，不显示“有 xx% 概率是某种鸟”。来源：
+https://raw.githubusercontent.com/tensorflow/tfhub.dev/master/assets/docs/google/models/yamnet/1.md
+
+仅采用 IBM 的上述两份已核验音频，不顺带复制整个 samples 目录：其它文件许可各异（含 Sampling+ 等）。IBM 的 class_labels_indices.csv 另标 CC BY-SA 4.0，本项目无需复制该文件。将应用代码许可与 Apache 模型/运行时、CC0 鸟鸣、CC BY 4.0 雨声分别注明。
+
+可立即推进：固定模型 /1/；同版本本地 JS/WASM；下载两份明确许可的 WAV 并保存原始 hash；合法截取为短片段、记录时长/声道/采样率及改动；补齐 Apache 文本和音频 Credits；实跑后才写识别结果与浏览器网络限制的验证结论。

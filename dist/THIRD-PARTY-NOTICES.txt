@@ -1,0 +1,38 @@
+Soundwalk open-source credits
+
+Soundwalk application code: Copyright 2026 wenye li. Apache License 2.0.
+
+MediaPipe Tasks Audio 1.1.0
+Copyright The MediaPipe Authors. Apache License 2.0.
+https://www.npmjs.com/package/@mediapipe/tasks-audio/v/1.1.0
+https://github.com/google-ai-edge/mediapipe
+Runtime license: vendor/LICENSE
+The runtime's README documents on-device input processing and performance/utilization metrics sent to Google. Soundwalk hosts the runtime and model on its own origin and uses Content-Security-Policy connect-src 'self' to block connections to other origins. No external CDN or API is needed for model inference.
+
+YAMNet classification model
+Copyright Google. Apache License 2.0.
+https://www.kaggle.com/models/google/yamnet/tfLite/classification-tflite/1
+https://storage.googleapis.com/mediapipe-models/audio_classifier/yamnet/float32/1/yamnet.tflite
+https://github.com/tensorflow/models/tree/master/research/audioset/yamnet
+License included: models/LICENSE
+521 broad sound-event classes. Scores are not calibrated probabilities. This is not a bird species classifier.
+
+Birdsong reference audio
+"Birds 2" by jmiddlesworth. CC0 1.0.
+Original: https://freesound.org/people/jmiddlesworth/sounds/364663/
+License: https://creativecommons.org/publicdomain/zero/1.0/
+Redistributed original source: https://github.com/IBM/MAX-Audio-Classifier/blob/master/samples/birds2.wav
+Source credits: https://github.com/IBM/MAX-Audio-Classifier/blob/master/samples/README.md
+Modification: first 8 seconds extracted, original channel layout and sample rate retained.
+
+Rain reference audio
+"Rain, Moderate, C.wav" by InspectorJ (www.jshaw.co.uk). CC BY 4.0.
+Original: https://freesound.org/people/InspectorJ/sounds/401275/
+License: https://creativecommons.org/licenses/by/4.0/
+Redistributed original source: https://github.com/IBM/MAX-Audio-Classifier/blob/master/samples/rain.wav
+Source credits: https://github.com/IBM/MAX-Audio-Classifier/blob/master/samples/README.md
+Modification: first 8 seconds extracted, original channel layout and sample rate retained. No endorsement by the creator is implied.
+
+Synthetic rain-like test audio
+Generated using seeded filtered noise for this project. CC0 1.0.
+This is a test signal, not an outdoor field recording.

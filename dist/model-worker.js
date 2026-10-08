@@ -1,0 +1,4 @@
+import {AudioClassifier, FilesetResolver} from './vendor/audio_bundle.mjs';
+let loading;
+function getModel(){if(!loading)loading=(async()=>{const files=await FilesetResolver.forAudioTasks(new URL('./vendor/wasm/',self.location).href,true);return AudioClassifier.createFromOptions(files,{baseOptions:{modelAssetPath:new URL('./models/yamnet.tflite',self.location).href,delegate:'CPU'},maxResults:-1});})().catch(e=>{loading=null;throw e;});return loading;}
+self.onmessage=async({data})=>{try{const model=await getModel();const start=performance.now();const results=model.classify(data.samples,data.rate);self.postMessage({id:data.id,results,inferenceMs:performance.now()-start});}catch{self.postMessage({id:data.id,error:'The local sound model could not run. Please check your connection, reload, and try a short WAV file.'});}};

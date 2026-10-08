@@ -1,0 +1,5 @@
+evidence/
+*.tgz
+*.tar.gz
+.sites-runtime/
+.DS_Store

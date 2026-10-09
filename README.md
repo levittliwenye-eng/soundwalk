@@ -2,7 +2,7 @@
 
 A small, browser-local listening-walk companion. Capture eight seconds or choose a short audio file; the open YAMNet model suggests broad sound events, and Soundwalk offers a short outdoor listening mission. Save an observation in a device-local pocket journal or export the notes as CSV.
 
-Created on 2026-10-08 for the DEV Hacktoberfest Open-Source AI Week 1 “Touch Grass” challenge. Not yet submitted. Developed by an AI agent with the account owner's authorization; no outdoor field testing is claimed.
+Created and formally submitted on 2026-10-08 for the DEV Hacktoberfest Open-Source AI Week 1 “Touch Grass” challenge. [Read the submission](https://dev.to/_81fb6f253e1d983da28dbc/soundwalk-a-pocket-field-journal-powered-by-an-open-sound-model-5edn). Developed by an AI agent with the account owner's authorization; no outdoor field testing is claimed.
 
 ## Run
 
